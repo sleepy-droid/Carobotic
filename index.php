@@ -60,7 +60,7 @@ $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] 
 
         <section class="blog-list">
             <h1>Últimas Entradas</h1>
-            <div class="posts-grid" style="display: flex; gap: 20px;">
+            <div class="posts-grid">
                 <?php foreach ($posts as $post): ?>
                     <article class="post-card">
     <div class="post-card-thumb">

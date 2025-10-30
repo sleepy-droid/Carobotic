@@ -23,7 +23,7 @@ body {
     background-color: var(--color-light-gray);
     line-height: 1.6;
     /* Espacio para el navbar fijo */
-    padding-top: 5rem; 
+    padding-top: 6rem; 
 }
 
 a {
@@ -100,6 +100,7 @@ h1, h2, h3 {
     position: relative;
     width: 100%;
     height: 450px; /* Altura fija para el carrusel */
+    margin-top: 20px;
     margin-bottom: 40px;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -225,6 +226,7 @@ h1, h2, h3 {
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
+    height: 370px;
 }
 
 .post-card:hover {
@@ -235,7 +237,7 @@ h1, h2, h3 {
 .post-card-thumb {
     width: 100%;
     /* Contenedor de imagen con tamaño estandarizado */
-    height: 200px; 
+    height: 150px; 
     overflow: hidden;
     position: relative;
 }
@@ -259,11 +261,11 @@ h1, h2, h3 {
 }
 
 .post-card-content h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--color-navy);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     /* Limitar a dos líneas para estandarizar la altura */
-    height: 3.6rem; 
+    height: 3.2rem; 
     overflow: hidden;
 }
 
