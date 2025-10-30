@@ -27,7 +27,7 @@ $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] 
 <body>
 
     <?php
-    include '/includes/navbar.php';
+    include 'includes/navbar.php';
     ?>
 
     <main class="container">

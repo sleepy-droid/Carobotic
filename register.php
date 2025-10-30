@@ -1,82 +1,108 @@
 <?php
-require_once 'includes/db.php';
 require_once 'includes/config.php';
-session_start();
+require_once 'includes/db.php'; // Incluye la conexión PDO
 
-// 1. Obtener las 2 entradas más recientes para el carrusel (el más reciente primero)
+// 1. Verificar si ya hay usuarios registrados
 try {
-    $stmt = $pdo->prepare("SELECT id, title, content, image_url FROM posts ORDER BY created_at DESC LIMIT 2");
-    $stmt->execute();
-    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query("SELECT COUNT(*) FROM users");
+    $user_count = $stmt->fetchColumn();
 } catch (PDOException $e) {
-    // En caso de error de BD
-    $posts = []; 
-    // Loguear error: error_log($e->getMessage());
+    die("Error de base de datos inicial: " . $e->getMessage());
 }
 
-$is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+// Si ya existe al menos un usuario, no permitimos el registro
+if ($user_count > 0) {
+    header('Location: ' . BASE_URL . 'login.php');
+    exit;
+}
+
+$message = '';
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $password_confirm = $_POST['password_confirm'] ?? '';
+
+    if (empty($username) || empty($password) || empty($password_confirm)) {
+        $error = "Todos los campos son obligatorios.";
+    } elseif ($password !== $password_confirm) {
+        $error = "Las contraseñas no coinciden.";
+    } elseif (strlen($password) < 8) {
+        $error = "La contraseña debe tener al menos 8 caracteres.";
+    } else {
+        // 2. Hashear la contraseña de forma segura
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        // 3. Insertar el nuevo usuario
+        try {
+            $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+            $stmt->execute(['username' => $username, 'password' => $hashed_password]);
+            
+            // Éxito: Redirigir al login
+            header('Location: ' . BASE_URL . 'login.php?registered=true');
+            exit;
+            
+        } catch (PDOException $e) {
+            $error = "Error al intentar registrar el usuario. El nombre de usuario puede ya estar en uso.";
+        }
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carobotic - Blog de Vehículos Autónomos</title>
+    <title>Registro Admin - Carobotic</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .register-box {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            border: 2px solid var(--color-navy);
+            border-radius: 10px;
+            text-align: center;
+        }
+        /* ... (Estilos de input/button iguales al login) ... */
+        .register-box input[type="text"], .register-box input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--color-light-gray);
+            border-radius: 5px;
+            display: block;
+        }
+        .register-box button {
+            background-color: var(--color-navy);
+            color: var(--color-white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .error { color: red; margin-bottom: 15px; }
+    </style>
 </head>
 <body>
-
-    <?php
-    include '/includes/navbar.php';
-    ?>
-
-    <main class="container">
-        <section class="carousel-container">
-            <div class="carousel-slide" id="blog-carousel">
-                <?php if (count($posts) > 0): ?>
-                    <?php foreach ($posts as $index => $post): ?>
-                        <div class="carousel-item" style="background-image: url('uploads/<?php echo htmlspecialchars($post['image_url']); ?>');">
-                            <img src="uploads/<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
-                            <div class="carousel-caption">
-                                <h2><a href="post.php?id=<?php echo $post['id']; ?>" style="color:white; text-decoration:none;"><?php echo htmlspecialchars($post['title']); ?></a></h2>
-                                <p><?php echo substr(htmlspecialchars($post['content']), 0, 100) . '...'; ?></p>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="carousel-item" style="width:100%; background: var(--color-navy);"> 
-                        <div class="carousel-caption">
-                            <h2>¡Bienvenido a Carobotic!</h2>
-                            <p>Aún no hay entradas de blog publicadas. Inicia sesión como Admin para crear una.</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </section>
-
-        <section class="blog-list">
-            <h1>Últimas Entradas</h1>
-            <div class="posts-grid" style="display: flex; gap: 20px;">
-                <?php foreach ($posts as $post): ?>
-                    <article class="post-card" style="border: 1px solid var(--color-light-gray); padding: 15px; flex: 1;">
-                        <img src="uploads/<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" style="width: 100%; height: auto;">
-                        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
-                        <p><?php echo substr(htmlspecialchars($post['content']), 0, 80) . '...'; ?></p>
-                        <a href="post.php?id=<?php echo $post['id']; ?>" style="color: var(--color-navy); font-weight: bold;">Leer más</a>
-                    </article>
-                <?php endforeach; ?>
-            </div>
-        </section>
-
-    </main>
+    <?php include 'includes/navbar.php'; // Navbar para QoL ?>
     
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; <?php echo date('Y'); ?> Carobotic. Innovación en Vehículos Autónomos.</p>
-            <p style="font-size: 0.9em;">Desarrollado con PHP Puro.</p>
-        </div>
-    </footer>
+    <div class="register-box">
+        <h2>Registro de Primer Administrador</h2>
+        <p>Solo puedes registrarte si no existe un usuario en el sistema.</p>
+        
+        <?php if ($error): ?>
+            <p class="error"><?php echo $error; ?></p>
+        <?php endif; ?>
 
-    <script src="js/carousel.js"></script>
+        <form action="register.php" method="POST">
+            <input type="text" name="username" placeholder="Nuevo Usuario" required>
+            <input type="password" name="password" placeholder="Contraseña (Mín. 8 chars)" required>
+            <input type="password" name="password_confirm" placeholder="Repetir Contraseña" required>
+            <button type="submit">Registrar y Continuar</button>
+        </form>
+    </div>
 </body>
 </html>
