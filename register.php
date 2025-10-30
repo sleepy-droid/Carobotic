@@ -62,7 +62,7 @@ $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] 
                         <img src="uploads/<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" style="width: 100%; height: auto;">
                         <h3><?php echo htmlspecialchars($post['title']); ?></h3>
                         <p><?php echo substr(htmlspecialchars($post['content']), 0, 80) . '...'; ?></p>
-                        <a href="<?php echo BASE_URL; ?>post.php?id=<?php echo $post['id']; ?>" style="color: var(--color-navy); font-weight: bold;">Leer más</a>
+                        <a href="post.php?id=<?php echo $post['id']; ?>" style="color: var(--color-navy); font-weight: bold;">Leer más</a>
                     </article>
                 <?php endforeach; ?>
             </div>

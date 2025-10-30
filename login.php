@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/db.php';
+require_once 'includes/config.php';
 session_start();
 
 // Si ya está logueado, redirigir al panel
@@ -72,9 +73,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+    <?php
+$registered_success = isset($_GET['registered']) && $_GET['registered'] === 'true'; // Nuevo
+    ?>
+<?php include 'includes/navbar.php'; ?>
+    
     <div class="login-box">
         <h2>Panel de Administración</h2>
         <p>Acceso exclusivo para Carobotic Admin.</p>
+        
+        <?php if ($registered_success): ?>
+            <p style="color: green; margin-bottom: 15px;">¡Registro exitoso! Ya puedes iniciar sesión.</p>
+        <?php endif; ?>
         
         <?php if ($error): ?>
             <p class="error"><?php echo $error; ?></p>
@@ -85,6 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" placeholder="Contraseña" required>
             <button type="submit">Iniciar Sesión</button>
         </form>
+        
+        <p style="margin-top: 20px;"><a href="<?php echo BASE_URL; ?>register.php">¿No tienes usuario? Regístrate aquí</a></p>
     </div>
 </body>
 </html>

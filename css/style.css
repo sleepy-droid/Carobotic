@@ -20,12 +20,20 @@ body {
     margin: 0 auto;
 }
 
-/* --- Navbar --- */
+/* --- Navbar (Ajustado para ser Fijo y Ocultable) --- */
 .navbar {
+    /* Mantener las propiedades de color y borde... */
     background-color: var(--color-white);
     border-bottom: 2px solid var(--color-navy);
     padding: 1rem 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    /* Propiedades añadidas para UX/Scroll */
+    position: fixed; /* Hacerlo fijo */
+    width: 100%;
+    top: 0;
+    z-index: 100; /* Asegurar que esté encima de todo */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
 }
 
 .navbar-content {
@@ -102,6 +110,12 @@ body {
 .carousel-caption h2 {
     margin-top: 0;
     color: var(--color-white);
+}
+
+/* Compensación para evitar que el navbar cubra el contenido */
+body {
+    /* ... otras propiedades */
+    padding-top: 5rem; /* Espacio para el navbar fijo */
 }
 
 /* --- Footer --- */

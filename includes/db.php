@@ -1,4 +1,5 @@
 <?php
+require_once 'config.php';
 // Configuración de la base de datos
 define('DB_HOST', 'localhost'); 
 define('DB_NAME', 'carobotic_blog'); // tu nombre de BD

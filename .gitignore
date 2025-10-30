@@ -1,0 +1,6 @@
+# Ignorar la carpeta de imágenes subidas
+/uploads/
+
+# Ignorar archivos de configuración local (credenciales reales)
+/includes/db.php
+/includes/config.php
