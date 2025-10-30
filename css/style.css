@@ -1,0 +1,114 @@
+/* Variables de la marca */
+:root {
+    --color-navy: #001F3F; /* Azul Marino */
+    --color-white: #FFFFFF;
+    --color-light-gray: #f4f4f4;
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Recomendación de fuente técnica */
+    background-color: var(--color-white);
+    color: var(--color-navy);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: var(--color-white);
+    border-bottom: 2px solid var(--color-navy);
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-navy);
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: var(--color-navy);
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: var(--color-light-gray);
+}
+
+/* --- Carrusel (Estilos Base) --- */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    height: 400px; /* Altura fija para el carrusel */
+    margin-bottom: 3rem;
+}
+
+.carousel-slide {
+    display: flex; /* Para poner las imágenes lado a lado */
+    width: 200%; /* Si son 2 entradas, 100% por entrada */
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    width: 50%; /* Cada item ocupa la mitad del slide */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--color-white);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+}
+
+.carousel-caption {
+    position: absolute;
+    z-index: 2;
+    background: rgba(0, 31, 63, 0.7); /* Navy con transparencia */
+    padding: 20px;
+    max-width: 80%;
+    border-radius: 5px;
+}
+
+.carousel-caption h2 {
+    margin-top: 0;
+    color: var(--color-white);
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--color-navy);
+    color: var(--color-white);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
