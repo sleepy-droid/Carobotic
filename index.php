@@ -5,7 +5,7 @@ session_start();
 
 // 1. Obtener las 2 entradas más recientes para el carrusel (el más reciente primero)
 try {
-    $stmt = $pdo->prepare("SELECT id, title, content, image_url FROM posts ORDER BY created_at DESC LIMIT 2");
+    $stmt = $pdo->prepare("SELECT id, title, content, image_url FROM posts ORDER BY created_at DESC LIMIT 5");
     $stmt->execute();
     $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
