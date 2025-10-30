@@ -52,18 +52,26 @@ $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] 
                     </div>
                 <?php endif; ?>
             </div>
+            <button id="prev-btn" class="carousel-nav-btn">❮</button>
+            <button id="next-btn" class="carousel-nav-btn">❯</button>
+
+            <div class="carousel-indicators" id="carousel-indicators"></div>
         </section>
 
         <section class="blog-list">
             <h1>Últimas Entradas</h1>
             <div class="posts-grid" style="display: flex; gap: 20px;">
                 <?php foreach ($posts as $post): ?>
-                    <article class="post-card" style="border: 1px solid var(--color-light-gray); padding: 15px; flex: 1;">
-                        <img src="uploads/<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" style="width: 100%; height: auto;">
-                        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
-                        <p><?php echo substr(htmlspecialchars($post['content']), 0, 80) . '...'; ?></p>
-                        <a href="<?php echo BASE_URL; ?>post.php?id=<?php echo $post['id']; ?>" style="color: var(--color-navy); font-weight: bold;">Leer más</a>
-                    </article>
+                    <article class="post-card">
+    <div class="post-card-thumb">
+        <img src="uploads/<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+    </div>
+    <div class="post-card-content">
+        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
+        <p><?php echo substr(htmlspecialchars($post['content']), 0, 80) . '...'; ?></p>
+        <a href="<?php echo BASE_URL; ?>post.php?id=<?php echo $post['id']; ?>">Leer más</a>
+    </div>
+</article>
                 <?php endforeach; ?>
             </div>
         </section>
