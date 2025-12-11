@@ -2,5 +2,5 @@
 /uploads/
 
 # Ignorar archivos de configuración local (credenciales reales)
-/includes/db.php
-/includes/config.php
+#/includes/db.php
+#/includes/config.php
